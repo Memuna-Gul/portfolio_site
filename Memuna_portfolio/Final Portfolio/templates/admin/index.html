@@ -1,0 +1,92 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Dashboard</h2>
+    
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Projects</h5>
+                    <h2 class="card-text">{{ stats.projects }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Skills</h5>
+                    <h2 class="card-text">{{ stats.skills }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Experience</h5>
+                    <h2 class="card-text">{{ stats.experiences }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Education</h5>
+                    <h2 class="card-text">{{ stats.education }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Quick Actions
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="{{ url_for('project.create_view') }}" class="list-group-item list-group-item-action">
+                            <i class="bx bx-plus"></i> Add New Project
+                        </a>
+                        <a href="{{ url_for('skill.create_view') }}" class="list-group-item list-group-item-action">
+                            <i class="bx bx-plus"></i> Add New Skill
+                        </a>
+                        <a href="{{ url_for('experience.create_view') }}" class="list-group-item list-group-item-action">
+                            <i class="bx bx-plus"></i> Add New Experience
+                        </a>
+                        <a href="{{ url_for('profile.edit_view', id=1) }}" class="list-group-item list-group-item-action">
+                            <i class="bx bx-user"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Recent Projects
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for project in recent_projects %}
+                        <a href="{{ url_for('project.edit_view', id=project.id) }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ project.title }}</h6>
+                                <small>{{ project.created_at.strftime('%Y-%m-%d') }}</small>
+                            </div>
+                            <small>{{ project.description[:100] }}...</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

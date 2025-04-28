@@ -1,0 +1,383 @@
+{% extends 'base.html' %} {% block title %}{{ profile.name }} - Portfolio{%
+endblock %} {% block content %}
+<!-- Home Section -->
+<section class="section home active">
+  <div class="home-content">
+    <div class="home-info">
+      <h3>Hello I'm</h3>
+      <h1>{{ profile.name if profile.name else 'Your Name' }}</h1>
+      <h3>{{ profile.title if profile.title else 'Your Title' }}</h3>
+      <!-- Add this div for typing effect -->
+      <div class="typing-text">
+        <span id="typed-text"></span>
+        <span class="cursor">|</span>
+      </div>
+      <p>
+        {{ profile.description if profile.description else 'Your description
+        here' }}
+      </p>
+      <!-- Replace the existing button -->
+      <div class="btn-sci">
+        <a
+          href="#"
+          class="btn"
+          onclick="navigateToSection('portfolio'); return false;"
+          >View my work</a
+        >
+        <div class="sci">
+          {% if profile.github_url %}
+          <a
+            href="{{ profile.github_url }}"
+            target="_blank"
+            aria-label="GitHub"
+          >
+            <i class="bx bxl-github"></i>
+          </a>
+          {% endif %} {% if profile.linkedin_url %}
+          <a
+            href="{{ profile.linkedin_url }}"
+            target="_blank"
+            aria-label="LinkedIn"
+          >
+            <i class="bx bxl-linkedin"></i>
+          </a>
+          {% endif %} {% if profile.kaggle_url %}
+          <a
+            href="{{ profile.kaggle_url }}"
+            target="_blank"
+            aria-label="Kaggle"
+          >
+          <i class='fab fa-kaggle' style='font-size:24px; color: #1f242d;' ></i>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="home-image">
+      <div class="img-box">
+        <img
+          src="{{ url_for('static', filename=profile.image_path) if profile.image_path else url_for('static', filename='images/profile.png') }}"
+          alt="{{ profile.name }}"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+<!-- About Section -->
+<section class="section about">
+  <h2 class="title">About Me</h2>
+  <div class="about-content">
+    <div class="about-info">
+      <div class="text-box">
+        <h3>Professional Summary</h3>
+        <p>{{ profile.description }}</p>
+      </div>
+      <div class="personal-info">
+        <div class="info-item">
+          <span class="label">Name:</span>
+          <span class="value">{{ profile.name }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Title:</span>
+          <span class="value">{{ profile.title }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email:</span>
+          <span class="value"
+            >{{ profile.email if profile.email else 'Available on request'
+            }}</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Location:</span>
+          <span class="value"
+            >{{ profile.location if profile.location else 'Remote' }}</span
+          >
+        </div>
+      </div>
+      <!-- Update the about section button -->
+      <div class="about-buttons">
+        <a
+          href="#"
+          class="btn"
+          onclick="navigateToSection('portfolio'); return false;"
+          >View my work</a
+        >
+        <a
+          href="#"
+          class="btn contact-btn"
+          onclick="navigateToSection('contact'); return false;"
+          >Contact Me</a
+        >
+      </div>
+    </div>
+    <div class="about-image">
+      <div class="img-box about-img">
+        <img
+          src="{{ url_for('static', filename=profile.image_path) }}"
+          alt="{{ profile.name }}"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="section portfolio">
+  <h2 class="title">Portfolio</h2>
+  <div class="tab-wrapper">
+    <div class="tab-grid portfolio-box work active">
+      {% for project in projects %}
+      <div class="tab-item portfolio-item">
+        <div class="work-img">
+          <img
+            src="{{ url_for('static', filename=project.image_url) if project.image_url else url_for('static', filename='images/default-project.png') }}"
+            alt="{{ project.title }}"
+          />
+        </div>
+        <div class="work-info">
+          <h4>{{ project.title }}</h4>
+          <p>{{ project.description }}</p>
+          <div class="tech-used">
+            <p>{{ project.tech_used }}</p>
+          </div>
+          <div class="portfolio-icon work-icon">
+            <a href="{{ project.preview_link }}">
+              <i class="bx bx-arrow-back"></i>
+              <span class="tooltip">Preview</span>
+            </a>
+            <a href="{{ project.github_link }}">
+              <i class="bx bxl-github"></i>
+              <span class="tooltip">Github Repository</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Replace the Experience and Skills sections with this combined Resume section -->
+<section class="section resume">
+  <h2 class="title">Resume</h2>
+  <div class="resume-nav">
+    <button class="resume-nav-btn active" data-tab="experience">
+      Experience
+    </button>
+    <button class="resume-nav-btn" data-tab="skills">Skills</button>
+  </div>
+
+  <div class="resume-content">
+    <!-- Experience Tab -->
+    <div class="resume-tab active" id="experience-tab">
+      <div class="tab-grid resume-box experience">
+        {% for exp in experiences %}
+        <div class="tab-item resume-item">
+          <h4>{{ exp.period }}</h4>
+          <h4>{{ exp.title }}</h4>
+          <h4>{{ exp.company }}</h4>
+          <p>{{ exp.description }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Skills Tab -->
+    <div class="resume-tab" id="skills-tab">
+      <div class="tab-grid resume-box skills">
+        {% for skill in skills %}
+        <div class="tab-item resume-item">
+          {% if skill.icon %}
+          <i class="bx {{ skill.icon }}"></i>
+          {% endif %}
+          <p>{{ skill.name }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section contact" id="contact">
+  <h2 class="title">Contact</h2>
+  <!-- Add loading states for dynamic content -->
+  <div class="loading-spinner" id="contact-loading" style="display: none">
+    <div class="spinner"></div>
+  </div>
+  {% include 'partials/contact_form.html' %}
+</section>
+{% endblock %} {% block scripts %} {{ super() }}
+<script>
+  // Add this navigation function
+  function navigateToSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll(".section").forEach((section) => {
+      section.classList.remove("active");
+    });
+
+    // Show target section
+    const targetSection = document.querySelector(`.section.${sectionName}`);
+    if (targetSection) {
+      targetSection.classList.add("active");
+    }
+
+    // Update navigation active state
+    document.querySelectorAll(".nav-list li").forEach((navItem) => {
+      navItem.classList.remove("active");
+    });
+
+    // Find and activate the corresponding nav item
+    const navItem = document.querySelector(
+      `.nav-list li[data-section="${sectionName}"]`
+    );
+    if (navItem) {
+      navItem.classList.add("active");
+    }
+  }
+</script>
+
+<script type="text/typescript">
+  interface TypingEffect {
+      texts: string[];
+      element: HTMLElement;
+      loopNum: number;
+      period: number;
+      isDeleting: boolean;
+      txt: string;
+      tick(): void;
+  }
+
+  class TypeWriter implements TypingEffect {
+      texts: string[];
+      element: HTMLElement;
+      loopNum: number = 0;
+      period: number;
+      isDeleting: boolean = false;
+      txt: string = '';
+
+      constructor(element: HTMLElement, texts: string[], period: number = 500) {
+          this.texts = texts;
+          this.element = element;
+          this.period = period;
+          this.tick();
+      }
+
+      tick(): void {
+          const i: number = this.loopNum % this.texts.length;
+          const fullTxt: string = this.texts[i];
+
+          if (this.isDeleting) {
+              this.txt = fullTxt.substring(0, this.txt.length - 1);
+          } else {
+              this.txt = fullTxt.substring(0, this.txt.length + 1);
+          }
+
+          this.element.innerHTML = `<span class="highlight">${this.txt}</span>`;
+
+          let delta: number = 200 - Math.random() * 100;
+          if (this.isDeleting) { delta /= 2; }
+
+          if (!this.isDeleting && this.txt === fullTxt) {
+              delta = this.period;
+              this.isDeleting = true;
+          } else if (this.isDeleting && this.txt === '') {
+              this.isDeleting = false;
+              this.loopNum++;
+              delta = 500;
+          }
+
+          setTimeout(() => this.tick(), delta);
+      }
+  }
+
+  // Initialize typing effect when DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+      const element: HTMLElement | null = document.getElementById('typed-text');
+      if (element) {
+          const skills: string[] = [
+              '🐍 Python Developer',
+              '🤖 AI Development',
+              '🧠 Machine Learning Expert',
+              '🔮 Deep Learning Specialist',
+              '🔍 RAG System Developer',
+              '📊 Data Science',
+              '🌐 Full Stack Development',
+              '☁️ Cloud Computing',
+              '📱 API Development'
+          ];
+          new TypeWriter(element, skills, 2000);
+      }
+  });
+</script>
+
+<script>
+  // Add this compilation step
+  document
+    .querySelectorAll('script[type="text/typescript"]')
+    .forEach((script) => {
+      const tsCode = script.innerHTML;
+      const jsCode = ts.transpile(tsCode, {
+        target: ts.ScriptTarget.ES5,
+        module: ts.ModuleKind.None,
+      });
+
+      const newScript = document.createElement("script");
+      newScript.textContent = jsCode;
+      script.parentNode.replaceChild(newScript, script);
+    });
+</script>
+
+<!-- Add analytics tracking -->
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=YOUR-ID"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "YOUR-ID");
+</script>
+
+<style>
+  .typing-text {
+    min-height: 50px;
+    margin: 20px 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .highlight {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 3px;
+    background-color: var(--primary-color);
+    margin-left: 8px;
+    animation: blink 0.7s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .typing-text {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+{% endblock %}
